@@ -5,6 +5,11 @@
 	overflow-y: scroll;
 	list-style: none;
 }
-::-webkit-scrollbar {
+.scroller::-webkit-scrollbar {
     display: none;
+}
+
+.card{
+    border-radius: .70rem;
+    border: 0px solid;
 }

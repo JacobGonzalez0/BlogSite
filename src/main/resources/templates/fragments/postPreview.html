@@ -1,10 +1,28 @@
-<li th:fragment="postPreview" class="card mb-3">
+<li th:fragment="postPreview" class="card mb-3 shadow-sm">
     <div class="card-body">
-        <h3>Having a great day</h3>
+        <div class="d-flex justify-content-between">
+            <div class="date">
+                March 3rd
+            </div>
+            <div class="d-flex flex-wrap">
+                <button class="btn btn-secondary">
+                    Testing
+                </button>
+            </div>
+        </div>
+        <h5 class="card-title">Card title</h5>
         <p>I would say more but this is just an example post. This is a lot more formal than a twitter microblog and will be used for future employment opptunities</p>
+    
+    </div>
+    <div class="card-footer d-flex justify-content-between ">
         <div>
-            tags:
-            
+            <p class="card-text">
+                <a href="#" class="nav-link px-0">Read more</a>
+            </p>
+        </div>
+        
+        <div class="p-2">
+            Author: Jacob
         </div>
     </div>
 </li>
