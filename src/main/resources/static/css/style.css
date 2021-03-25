@@ -1,0 +1,10 @@
+.scroller{
+	position: relative;
+    height: calc(90vh - 90px);
+	overflow-x: hidden;
+	overflow-y: scroll;
+	list-style: none;
+}
+::-webkit-scrollbar {
+    display: none;
+}
