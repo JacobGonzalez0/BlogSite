@@ -1,3 +1,19 @@
+*{
+    Font-Family: 'Karla', Sans-Serif;
+}
+
+h1, h2, h3, h4 , h5, .btn, .date, .navbar-brand, .nav-link, .nav-item{
+    Font-Family: 'Rubik', Sans-Serif;
+}
+
+body{
+    background: url("/img/whitey.png");
+}
+
+.navbar{
+    border-radius: 0 0 .70rem .70rem;
+}
+
 .scroller{
 	position: relative;
     height: calc(90vh - 90px);
@@ -13,3 +29,7 @@
     border-radius: .70rem;
     border: 0px solid;
 }
+
+
+
+

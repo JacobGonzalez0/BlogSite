@@ -1,17 +1,24 @@
-<li th:fragment="postPreview" class="card mb-3 shadow-sm">
+<li th:fragment="postPreview(title, date, tags, content, id, author)" class="card mb-3 shadow-sm">
     <div class="card-body">
         <div class="d-flex justify-content-between">
             <div class="date">
-                March 3rd
+                <td th:text="${date}" />
             </div>
             <div class="d-flex flex-wrap">
-                <button class="btn btn-secondary">
-                    Testing
-                </button>
+                <tr th:each="tag: ${tags}">
+                    <button class="btn btn-secondary mx-1">
+                        <td th:text="${tag}" />
+                    </button>
+                </tr>
+                
             </div>
         </div>
-        <h5 class="card-title">Card title</h5>
-        <p>I would say more but this is just an example post. This is a lot more formal than a twitter microblog and will be used for future employment opptunities</p>
+        <h5 class="card-title">
+            <td th:text="${title}" />
+        </h5>
+        <p>
+            <td th:text="${content}" />
+        </p>
     
     </div>
     <div class="card-footer d-flex justify-content-between ">
@@ -22,7 +29,7 @@
         </div>
         
         <div class="p-2">
-            Author: Jacob
+            Author: <td th:text="${author}" />
         </div>
     </div>
 </li>
