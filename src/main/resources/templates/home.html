@@ -12,7 +12,7 @@
         <div class="row">
             <ul class="col-sm-12 col-md-9 col-lg-8 my-4 cards scroller">
                 <tr th:each="post: ${posts}">
-                    <li th:replace="fragments/postPreview :: postPreview(${post.title}, ${post.date} , ${post.tags}, ${post.content}, ${post.id}, ${post.author})">
+                    <li th:replace="fragments/postPreview :: postPreview(${post.title}, ${post.dateCreated} , ${post.tags}, ${post.content}, ${post.id}, ${post.user})">
                     </li>
                 </tr>
             </ul>

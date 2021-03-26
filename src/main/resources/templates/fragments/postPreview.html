@@ -1,4 +1,4 @@
-<li th:fragment="postPreview(title, date, tags, content, id, author)" class="card mb-3 shadow-sm">
+<li th:fragment="postPreview(title, date, tags, content, id, user)" class="card mb-3 shadow-sm">
     <div class="card-body">
         <div class="d-flex justify-content-between">
             <div class="date">
@@ -29,7 +29,7 @@
         </div>
         
         <div class="p-2">
-            Author: <td th:text="${author}" />
+            Author: <td th:text="${user.username}" />
         </div>
     </div>
 </li>
