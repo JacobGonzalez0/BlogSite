@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -40,13 +41,7 @@ public class Post {
     @ManyToOne
     private User user; 
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name="post_tags",
-        joinColumns={@JoinColumn(name="post_id")},
-        inverseJoinColumns={@JoinColumn(name="tag_id")}
-    )
-    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Tag> tags;
 
     public Post(Long id, String title, String content, Date dateCreated, User user) {

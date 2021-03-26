@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.codeup.codeup_demo.models.Post;
+import com.codeup.codeup_demo.models.Tag;
 import com.codeup.codeup_demo.models.User;
 import com.codeup.codeup_demo.repos.PostRepository;
 import com.codeup.codeup_demo.repos.UserRepository;
@@ -46,6 +47,13 @@ public class HomeController {
         post.setUser(user);
         post.setDateCreated(new Date());
         
+        //tags
+        List<Tag> tags = new ArrayList<Tag>();
+        tags.add(new Tag("Test", post));
+        tags.add(new Tag("Test2", post));
+
+        post.setTags(tags);
+
         postDao.save(post);
         return "createPost";
     }

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,9 +23,27 @@ public class Tag {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Post> posts;
+    @ManyToOne
+    @JoinColumn (name = "post_id")
+    private Post post;
 
+    public Tag(String name, Post post) {
+
+        this.name = name;
+        this.post = post;
+    }
+    
+    public Post getPost() {
+        return this.post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+
+    public Tag() {
+    }
 
     public long getId() {
         return this.id;
@@ -42,12 +61,6 @@ public class Tag {
         this.name = name;
     }
 
-    public List<Post> getPosts() {
-        return this.posts;
-    }
 
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
 
 }

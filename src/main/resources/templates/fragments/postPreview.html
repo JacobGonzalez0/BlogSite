@@ -7,7 +7,7 @@
             <div class="d-flex flex-wrap">
                 <tr th:each="tag: ${tags}">
                     <button class="btn btn-secondary mx-1">
-                        <td th:text="${tag}" />
+                        <td th:text="${tag.name}" />
                     </button>
                 </tr>
                 
