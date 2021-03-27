@@ -17,7 +17,7 @@
             <td th:text="${title}" />
         </h5>
         <p>
-            <td th:text="${content}" />
+            <td th:remove="tag" th:utext="${content}" />
         </p>
     
     </div>

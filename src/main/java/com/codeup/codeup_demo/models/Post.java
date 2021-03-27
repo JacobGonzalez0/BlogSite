@@ -20,6 +20,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.JoinColumn;
 
+
+
 @Entity
 @Table(name = "posts")
 public class Post {

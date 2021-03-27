@@ -82,7 +82,7 @@ public class HomeController {
     @GetMapping("/")
     public String welcome(Model model) {
 
-        List<Post> posts = postDao.findAll();
+        List<Post> posts = postDao.findAllByOrderByIdDesc();
         
         model.addAttribute("title", "Home");
         model.addAttribute("posts", posts);
