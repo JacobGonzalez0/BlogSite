@@ -30,6 +30,10 @@ body{
     border: 0px solid;
 }
 
+.post-preview img{
+    width:100%;
+    height:auto;
+}
 
 
 

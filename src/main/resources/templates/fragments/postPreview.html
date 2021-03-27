@@ -1,4 +1,4 @@
-<li th:fragment="postPreview(title, date, tags, content, id, user)" class="card mb-3 shadow-sm">
+<li th:fragment="postPreview(title, date, tags, content, id, user)" class="card mb-3 shadow-sm post-preview">
     <div class="card-body">
         <div class="d-flex justify-content-between">
             <div class="date">
@@ -17,7 +17,7 @@
             <td th:text="${title}" />
         </h5>
         <p>
-            <td th:remove="tag" th:utext="${content}" />
+            <td  th:utext="${content}" />
         </p>
     
     </div>
