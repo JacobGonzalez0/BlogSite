@@ -13,8 +13,8 @@
     </nav>
 
 
-    <div class="container-fluid container-lg">
-        <div class="row">
+    <div class="container-fluid container-lg p-0 px-md-2">
+        <div class="row w-100">
             <div class="col col-md-8">
 
                 <form class="mx-auto my-3 col col-md-8 row needs-validation form-control" action="/post/create" method="post" novalidate>
@@ -51,6 +51,9 @@
      tinymce.init({
         selector: '#editor',
         plugins: 'link lists media image code',
+        mobile: {
+            menubar: true
+        },
         toolbar: 'alignleft aligncenter alignright alignjustify | formatselect | bullist numlist | outdent indent | link image code',
         images_upload_handler: (blobInfo, success, failure)=>{
             var xhr, formData;

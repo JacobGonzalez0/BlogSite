@@ -21,9 +21,6 @@ body{
 	overflow-y: scroll;
 	list-style: none;
 }
-.scroller::-webkit-scrollbar {
-    display: none;
-}
 
 .card{
     border-radius: .70rem;
@@ -33,6 +30,30 @@ body{
 .post-preview img{
     width:100%;
     height:auto;
+}
+
+::-webkit-scrollbar {
+width: 20px;
+height: 20px;
+}
+::-webkit-scrollbar-thumb {
+background: linear-gradient(13deg, #707070 14%,#969696 60%);
+border-radius: 15px;
+}
+::-webkit-scrollbar-thumb:hover{
+background: linear-gradient(13deg, #8f8f8f 14%,#a1a1a1 38%);
+}
+::-webkit-scrollbar-track{
+background: rgba(0, 0, 0, 0);
+border-radius: 10px;
+}
+
+@media (max-width: 720px) { 
+    
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
 }
 
 

@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
         SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
         authorityMapper.setConvertToUpperCase(true);
         //everyone entering will have a guest auth
-        authorityMapper.setDefaultAuthority("GUEST");
+        authorityMapper.setDefaultAuthority("USER");
         return authorityMapper;
     }
 
@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/post", "/css/*", "/js/*", "/images/*","/favicon.ico","/img/*").permitAll()
+                .antMatchers("/", "/post", "/css/*", "/js/*","/images/**","/favicon.ico","/img/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

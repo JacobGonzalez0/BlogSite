@@ -18,8 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/upload")
 public class FileUploadController {
-	
-    
+
 	@PostMapping("/image")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String saveImage(@RequestParam("file") MultipartFile file) {
