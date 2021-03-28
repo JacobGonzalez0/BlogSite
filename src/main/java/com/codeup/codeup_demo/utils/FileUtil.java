@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.time.Year;
 import java.time.YearMonth;
 
-import com.codeup.codeup_demo.WebConfig;
+import com.codeup.codeup_demo.WebSecurityConfig;
 
 public class FileUtil {
     
@@ -25,7 +25,7 @@ public class FileUtil {
 	
 	public static Path getImagePath(String fileName) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(WebConfig.IMAGE_FILE_BASE);
+		sb.append(WebSecurityConfig.IMAGE_FILE_BASE);
 		sb.append(Year.now().getValue());
 		
 		createDirectoryIfItDoesntExist(sb.toString());
@@ -43,7 +43,7 @@ public class FileUtil {
 	
 
 	public static String getImageUrl(String imageFileName) {
-	    String baseUrl = WebConfig.BASE_URL;
+	    String baseUrl = WebSecurityConfig.BASE_URL;
         StringBuilder sb = new StringBuilder();
         
         sb.append(baseUrl);
@@ -52,7 +52,7 @@ public class FileUtil {
             baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
         }
         
-        sb.append(WebConfig.IMAGE_RESOURCE_BASE);
+        sb.append(WebSecurityConfig.IMAGE_RESOURCE_BASE);
         sb.append(getYearAndMonthUrlFragment());
         sb.append(imageFileName);
         
