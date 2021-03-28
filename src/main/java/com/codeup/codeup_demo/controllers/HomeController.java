@@ -10,6 +10,7 @@ import com.codeup.codeup_demo.models.User;
 import com.codeup.codeup_demo.repos.PostRepository;
 import com.codeup.codeup_demo.repos.UserRepository;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,11 +29,13 @@ public class HomeController {
     }
 
     @GetMapping("/post/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String viewPostForm(){
         return "createPost";
     }
 
     @PostMapping(path = "/post/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createPost(
         @RequestParam(name = "title") String title,
         @RequestParam(name = "content") String content,  

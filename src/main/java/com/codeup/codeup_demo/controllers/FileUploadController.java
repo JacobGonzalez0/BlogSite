@@ -7,6 +7,7 @@ import java.nio.file.Files;
 
 import com.codeup.codeup_demo.utils.FileUtil;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ public class FileUploadController {
 	
     
 	@PostMapping("/image")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String saveImage(@RequestParam("file") MultipartFile file) {
 	    String url = null;
 	    

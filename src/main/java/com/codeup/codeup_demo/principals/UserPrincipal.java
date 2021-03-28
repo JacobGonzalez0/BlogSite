@@ -1,6 +1,7 @@
 package com.codeup.codeup_demo.principals;
 
 import com.codeup.codeup_demo.models.User;
+import com.codeup.codeup_demo.models.AuthGroup;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class UserPrincipal implements UserDetails{
     
@@ -17,15 +21,27 @@ public class UserPrincipal implements UserDetails{
     private static final long serialVersionUID = -2935879292557474907L;
     
     private User user;
+    private List<AuthGroup> authGroups;
 
-    public UserPrincipal(User user){
+    public UserPrincipal(User user, List<AuthGroup> authGroups){
         super();
         this.user = user;
+        this.authGroups = authGroups;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        if(null == authGroups){
+             return Collections.emptySet();
+        }
+        Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
+        authGroups.forEach(group->{
+            //grabs each group and puts them in the hashset to return
+            grantedAuthorities.add(
+                new SimpleGrantedAuthority(group.getAuthGroup())
+            );
+        });
+        return grantedAuthorities;
     }
 
     @Override
