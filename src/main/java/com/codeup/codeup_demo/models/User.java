@@ -1,5 +1,7 @@
 package com.codeup.codeup_demo.models;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,9 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.*;
+
 @Entity
 @Table(name = "users")
-public class User {
+public class User{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
@@ -54,6 +59,5 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
     
 }

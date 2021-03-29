@@ -74,4 +74,20 @@ public class UserPrincipal implements UserDetails{
         return true;
     }
 
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<AuthGroup> getAuthGroups() {
+        return this.authGroups;
+    }
+
+    public void setAuthGroups(List<AuthGroup> authGroups) {
+        this.authGroups = authGroups;
+    }
+
 }

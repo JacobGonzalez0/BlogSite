@@ -6,9 +6,13 @@ import com.codeup.codeup_demo.repos.UserRepository;
 import java.util.List;
 
 import com.codeup.codeup_demo.models.AuthGroup;
+import com.codeup.codeup_demo.models.Post;
 import com.codeup.codeup_demo.models.User;
 import com.codeup.codeup_demo.principals.UserPrincipal;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,4 +41,23 @@ public class UserService implements UserDetailsService{
         List<AuthGroup> authGroups = this.authGroupRepository.findByUsername(username);
         return new UserPrincipal(user, authGroups);
     }
+
+    public boolean isLoggedIn(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return !(auth instanceof AnonymousAuthenticationToken);
+    }
+
+    public User getCurrentUser(){
+        if(!isLoggedIn()) return null;
+        //grabs the user principle that has these methods
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //then abstracts the user and gets it from the DB
+        return userRepository.getOne(user.getUser().getId());
+    }
+
+    public boolean postOwner(Post post, User user){
+        return post.getUser().equals(user);
+    }
+
+
 }

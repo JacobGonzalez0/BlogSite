@@ -9,8 +9,10 @@ import com.codeup.codeup_demo.models.Tag;
 import com.codeup.codeup_demo.models.User;
 import com.codeup.codeup_demo.repos.PostRepository;
 import com.codeup.codeup_demo.repos.UserRepository;
+import com.codeup.codeup_demo.services.UserService;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +25,13 @@ public class HomeController {
 
     private final UserRepository userDao;
     private final PostRepository postDao;
+    private final UserService usersSvc;
 
-    public HomeController(UserRepository userDao, PostRepository postDao) {
+
+    public HomeController(UserRepository userDao, PostRepository postDao, UserService usersSvc) {
         this.userDao = userDao;
         this.postDao = postDao;
+        this.usersSvc = usersSvc;
     }
 
     @GetMapping(value="/login")
@@ -49,6 +54,50 @@ public class HomeController {
         return "post";
     }
 
+    @GetMapping("/post/edit/{id}")
+    public String editPostForm(
+        @PathVariable Long id,
+        Model model){
+
+        Post post = postDao.getOne(id);
+        User user = usersSvc.getCurrentUser();
+
+        if(!usersSvc.postOwner(post, user)){
+            model.addAttribute("error", "You do not own the post");
+            return "editPost";
+        };
+
+        model.addAttribute("post", post);
+        return "editPost";
+    }
+
+    @PostMapping("/post/edit/{id}")
+    public String editPost(
+        @RequestParam(name = "title") String title,
+        @RequestParam(name = "content") String content, 
+        @PathVariable Long id,
+        Model model){
+        //create new post
+        Post post = postDao.getOne(id);
+        post.setTitle(title);
+        post.setContent(content);
+        //grab user by id and pass it to post
+        User user = usersSvc.getCurrentUser();
+        post.setUser(user);
+        post.setDateCreated(new Date());
+        
+        //tags
+        List<Tag> tags = new ArrayList<Tag>();
+        tags.add(new Tag("Test", post));
+        tags.add(new Tag("Test2", post));
+
+        post.setTags(tags);
+
+        postDao.save(post);
+        return "createPost";
+    }
+
+    
 
     @GetMapping("/post/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -60,15 +109,14 @@ public class HomeController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createPost(
         @RequestParam(name = "title") String title,
-        @RequestParam(name = "content") String content,  
-        @RequestParam(name = "userid") long userId, 
+        @RequestParam(name = "content") String content, 
         Model model) {
         //create new post
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
         //grab user by id and pass it to post
-        User user = userDao.getOne(userId);
+        User user = usersSvc.getCurrentUser();
         post.setUser(user);
         post.setDateCreated(new Date());
         
