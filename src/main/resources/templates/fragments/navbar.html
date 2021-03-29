@@ -1,3 +1,6 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <nav th:fragment="navBar" class="navbar navbar-expand-md navbar-dark container shadow bg-dark bg-gradient">
     <div class="container mx-3">
         <a class="navbar-brand" href="/">Jacob Gonzalez</a>
@@ -15,9 +18,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/contact">Contact</a>
                 </li>
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                
             </ul>
         </div>
     </div>
 
 </nav>
-
+</html>

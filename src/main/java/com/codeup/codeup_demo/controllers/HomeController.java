@@ -28,6 +28,16 @@ public class HomeController {
         this.postDao = postDao;
     }
 
+    @GetMapping(value="/login")
+    public String getLoginPage(Model model){
+        return "login";
+    }
+
+    @GetMapping(value="/logout-success")
+    public String getLogoutPage(Model model){
+        return "logout";
+    }
+
     @GetMapping("/post/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String viewPostForm(){

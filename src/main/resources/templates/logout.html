@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace=" fragments/head :: head(${title})">
+</head>
+<body>
+    <nav th:replace="fragments/navbar :: navBar">
+
+    </nav>
+
+    <div class="container-fluid container-lg">
+
+        <div class="card col">
+            <h2>You have been successfully logged out</h2>
+        </div>
+
+    </div>
+
+    <footer th:replace="fragments/footer :: footer">
+
+    </footer>
+    
+</body>
+<script>
+    setTimeout(
+    function() {
+        window.location.replace('/');
+    }, 5000);
+</script>
+</html>
