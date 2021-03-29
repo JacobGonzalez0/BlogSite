@@ -54,6 +54,14 @@ public class HomeController {
         return "post";
     }
 
+    @GetMapping("/manage")
+    public String managePosts(Model model){
+        List<Post> posts = postDao.findAllByOrderByIdDesc();
+        model.addAttribute("title", "Manage Posts");
+        model.addAttribute("posts", posts);
+        return "managePosts";
+    }
+
     @GetMapping("/post/edit/{id}")
     public String editPostForm(
         @PathVariable Long id,

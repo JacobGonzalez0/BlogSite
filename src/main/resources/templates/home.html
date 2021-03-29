@@ -30,13 +30,10 @@
                             <a class="nav-link text-muted" href="#">Comments</a>
                         </li>
                         <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                            <a class="nav-link text-muted" href="#">Create Post</a>
+                            <a class="nav-link text-muted" href="/post/create">Create Posts</a>
                         </li>
                         <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                            <a class="nav-link text-muted" href="#">Edit Post</a>
-                        </li>
-                        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                            <a class="nav-link text-muted" href="#">Delete Post</a>
+                            <a class="nav-link text-muted" href="/manage">Manage Posts</a>
                         </li>
                         
                     </ul>
