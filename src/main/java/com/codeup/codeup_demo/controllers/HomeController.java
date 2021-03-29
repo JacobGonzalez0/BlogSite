@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,6 +38,17 @@ public class HomeController {
     public String getLogoutPage(Model model){
         return "logout";
     }
+
+    @GetMapping("/post/{id}")
+    public String viewPost(Model model,
+        @PathVariable Long id){
+        Post post = postDao.getOne(id);
+    
+        model.addAttribute("title", "Post - " + post.getTitle());
+        model.addAttribute("post", post);
+        return "post";
+    }
+
 
     @GetMapping("/post/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

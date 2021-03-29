@@ -56,5 +56,10 @@ border-radius: 10px;
     }
 }
 
+.post img{
+    width: calc(100% - 2em);  
+    height: auto;
+}
+
 
 
