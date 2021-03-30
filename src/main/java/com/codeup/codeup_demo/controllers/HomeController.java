@@ -11,8 +11,10 @@ import com.codeup.codeup_demo.repos.PostRepository;
 import com.codeup.codeup_demo.repos.UserRepository;
 import com.codeup.codeup_demo.services.UserService;
 
+import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,9 +74,10 @@ public class HomeController {
         Post post = postDao.getOne(id);
         User user = usersSvc.getCurrentUser();
 
-        if(!usersSvc.postOwner(post, user)){
+        //allows for admin to edit any post
+        if(!usersSvc.postOwner(post, user) || !usersSvc.userIsRole(user, "admin")){ 
             model.addAttribute("error", "You do not own the post");
-            return "manage";
+            return "redirect:/manage";
         };
 
         model.addAttribute("post", post);
@@ -90,7 +93,7 @@ public class HomeController {
         Post post = postDao.getOne(id);
         User user = usersSvc.getCurrentUser();
 
-        if(!usersSvc.postOwner(post, user)){
+        if(!usersSvc.postOwner(post, user) || !usersSvc.userIsRole(user, "admin")){ 
             model.addAttribute("error", "You do not own the post");
             return "redirect:/manage";
         };
@@ -110,7 +113,7 @@ public class HomeController {
         User user = usersSvc.getCurrentUser();
 
         //check to see if you are the owner
-        if(!usersSvc.postOwner(post, user)){
+        if(!usersSvc.postOwner(post, user) || !usersSvc.userIsRole(user, "admin")){ 
             model.addAttribute("error", "You do not own the post");
             return "redirect:/manage";
         };
@@ -177,7 +180,7 @@ public class HomeController {
 
         postDao.save(post);
         model.addAttribute("title", "Create Post");
-        return "createPost";
+        return "redirect:/";
     }
 
     @GetMapping("/register")

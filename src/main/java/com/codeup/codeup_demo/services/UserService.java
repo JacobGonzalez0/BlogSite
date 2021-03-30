@@ -41,6 +41,13 @@ public class UserService implements UserDetailsService{
         List<AuthGroup> authGroups = this.authGroupRepository.findByUsername(username);
         return new UserPrincipal(user, authGroups);
     }
+    
+    public boolean userIsRole(User user,String role){
+        List<AuthGroup> authGroups = this.authGroupRepository.findByUsername(user.getUsername());
+
+        return authGroups.stream().anyMatch(group -> 
+            group.getAuthGroup().toLowerCase().contains(role));
+    }
 
     public boolean isLoggedIn(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
