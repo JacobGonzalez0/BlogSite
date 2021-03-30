@@ -15,52 +15,21 @@
 
     <div class="container-fluid container-lg p-0 px-md-2">
         <div class="row w-100">
-            <div>
-                <div class="row bg-white m-2 rounded p-2">
-                    <h4 class="col-1" >
-                        ID
-                    </h4>
-                    <h4 class="col">
-                        Title
-                    </h4>
-                    <h4 class="col" >
-                        Author
-                    </h4>
+            <div class="col col-md-8">
 
-                    <div class="col-2 " >
-                        Actions
+                <form class="mx-auto my-3 col col-md-8 row needs-validation form-control" th:action="@{/post/delete/{id}(id=${post.id})}" method="post" novalidate>
+                    <div class="p-4">
+                        <h2>You are about to delete: </h2>
+                        <p th:text="${post.title}">
+                            
+                        </p>
+                        <a class="btn btn-primary" href="/manage"> No go back!</a>
+                        <input class="btn btn-danger col my-2" type="submit" value="Delete"/>
                     </div>
-                </div>
+    
+                </form>
+                <!-- Form ends -->
             </div>
-            <ul>
-                
-                <tr th:each="post: ${posts}">
-                    <li>
-                        <div class="row bg-white m-2 rounded p-2">
-                            <h4 class="col-1" th:text="${post.id}">
-
-                            </h4>
-                            <h4 class="col" th:text="${post.title}">
-
-                            </h4>
-                            <h4 class="col" th:text="${post.user.username}">
-
-                            </h4>
-
-                            <div class="col-2 d-flex btn-group" >
-                                <a th:href="@{/post/edit/{id}(id=${post.id})}" class="btn btn-warning">
-                                    Edit
-                                </a>
-                                <a th:href="@{/post/delete/{id}(id=${post.id})}" class="btn btn-danger">
-                                    Delete
-                                </a>
-                                
-                            </div>
-                        </div>
-                    </li>
-                </tr>
-            </ul>
-                
             
         </div>
     </div>

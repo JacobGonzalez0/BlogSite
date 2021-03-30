@@ -36,11 +36,13 @@ public class HomeController {
 
     @GetMapping(value="/login")
     public String getLoginPage(Model model){
+        model.addAttribute("title", "Login");
         return "login";
     }
 
     @GetMapping(value="/logout-success")
     public String getLogoutPage(Model model){
+        model.addAttribute("title", "Logged out!");
         return "logout";
     }
 
@@ -72,11 +74,49 @@ public class HomeController {
 
         if(!usersSvc.postOwner(post, user)){
             model.addAttribute("error", "You do not own the post");
-            return "editPost";
+            return "manage";
         };
 
         model.addAttribute("post", post);
+        model.addAttribute("title", "Edit Post - " + post.getTitle());
         return "editPost";
+    }
+
+    @GetMapping("/post/delete/{id}")
+    public String deletePostForm(
+        @PathVariable Long id,
+        Model model){
+
+        Post post = postDao.getOne(id);
+        User user = usersSvc.getCurrentUser();
+
+        if(!usersSvc.postOwner(post, user)){
+            model.addAttribute("error", "You do not own the post");
+            return "redirect:/manage";
+        };
+
+        model.addAttribute("post", post);
+        model.addAttribute("title", "Delete Post - " + post.getTitle());
+        return "deletePost";
+    }
+
+    @PostMapping("/post/delete/{id}")
+    public String deletePost( 
+        @PathVariable Long id,
+        Model model){
+        //create new post
+        Post post = postDao.getOne(id);
+        //grab user by id and pass it to post
+        User user = usersSvc.getCurrentUser();
+
+        //check to see if you are the owner
+        if(!usersSvc.postOwner(post, user)){
+            model.addAttribute("error", "You do not own the post");
+            return "redirect:/manage";
+        };
+
+        postDao.delete(post);
+        return "redirect:/manage";
     }
 
     @PostMapping("/post/edit/{id}")
@@ -102,7 +142,7 @@ public class HomeController {
         post.setTags(tags);
 
         postDao.save(post);
-        return "createPost";
+        return "redirect:/manage";
     }
 
     
@@ -136,6 +176,7 @@ public class HomeController {
         post.setTags(tags);
 
         postDao.save(post);
+        model.addAttribute("title", "Create Post");
         return "createPost";
     }
 
@@ -154,6 +195,7 @@ public class HomeController {
         user.setUsername(username);
         user.setEmail(email);
     
+        model.addAttribute("title", "Register");
         userDao.save(user);
         return "register";
     }
