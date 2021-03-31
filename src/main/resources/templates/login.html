@@ -9,7 +9,11 @@
 
     <div class="container-fluid container-lg">
 
-        <form th:action="@{/login}" method="post" class="form-control m-auto p-2">
+        <div th:replace="fragments/alerts :: alerts">
+
+        </div>
+
+        <form th:action="@{/login}" method="post" class="form-control m-auto p-2 col">
             
             <div class="form-group row">
                 <label for="username" class="col-sm-2 col-form-label">Username</label>

@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @Controller
 public class HomeController {
@@ -28,12 +30,14 @@ public class HomeController {
     private final UserRepository userDao;
     private final PostRepository postDao;
     private final UserService usersSvc;
+    private final BCryptPasswordEncoder bcrypt;
 
 
     public HomeController(UserRepository userDao, PostRepository postDao, UserService usersSvc) {
         this.userDao = userDao;
         this.postDao = postDao;
         this.usersSvc = usersSvc;
+        this.bcrypt = new BCryptPasswordEncoder(11);
     }
 
     @GetMapping(value="/login")
@@ -59,6 +63,7 @@ public class HomeController {
     }
 
     @GetMapping("/manage")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String managePosts(Model model){
         List<Post> posts = postDao.findAllByOrderByIdDesc();
         model.addAttribute("title", "Manage Posts");
@@ -67,6 +72,7 @@ public class HomeController {
     }
 
     @GetMapping("/post/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editPostForm(
         @PathVariable Long id,
         Model model){
@@ -86,6 +92,7 @@ public class HomeController {
     }
 
     @GetMapping("/post/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deletePostForm(
         @PathVariable Long id,
         Model model){
@@ -104,6 +111,7 @@ public class HomeController {
     }
 
     @PostMapping("/post/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deletePost( 
         @PathVariable Long id,
         Model model){
@@ -123,6 +131,7 @@ public class HomeController {
     }
 
     @PostMapping("/post/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editPost(
         @RequestParam(name = "title") String title,
         @RequestParam(name = "content") String content, 
@@ -191,16 +200,19 @@ public class HomeController {
     @PostMapping(path = "/register")
     public String createUser(
         @RequestParam(name = "username") String username,
-        @RequestParam(name = "email") String email,  
+        @RequestParam(name = "email") String email, 
+        @RequestParam(name = "password") String password,
         Model model) {
         //create new post
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
-    
-        model.addAttribute("title", "Register");
+        String hash = bcrypt.encode(password);
+        user.setPassword(hash);
+
         userDao.save(user);
-        return "register";
+        model.addAttribute("message", "You should be able to login now!");
+        return "login";
     }
     
     
