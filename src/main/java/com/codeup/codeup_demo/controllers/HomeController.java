@@ -1,6 +1,7 @@
 package com.codeup.codeup_demo.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -83,6 +84,7 @@ public class HomeController {
 
         Post post = postDao.getOne(id);
         User user = usersSvc.getCurrentUser();
+        StringBuilder tags = new StringBuilder();
 
         //allows for admin to edit any post
         if(!usersSvc.postOwner(post, user) || !usersSvc.userIsRole(user, "admin")){ 
@@ -90,7 +92,17 @@ public class HomeController {
             return "redirect:/manage";
         };
 
+        //Comma seperates tags
+        for(int i = 0; i < post.getTags().size(); i++ ){
+            if(i == 0){
+                tags.append(post.getTags().get(i).getName());
+            }else{
+                tags.append("," + post.getTags().get(i).getName());
+            }
+        }
+
         model.addAttribute("post", post);
+        model.addAttribute("tags", tags.toString());
         model.addAttribute("title", "Edit Post - " + post.getTitle());
         return "editPost";
     }
@@ -103,12 +115,14 @@ public class HomeController {
 
         Post post = postDao.getOne(id);
         User user = usersSvc.getCurrentUser();
-
+        
         if(!usersSvc.postOwner(post, user) || !usersSvc.userIsRole(user, "admin")){ 
             model.addAttribute("error", "You do not own the post");
             return "redirect:/manage";
         };
 
+        
+        
         model.addAttribute("post", post);
         model.addAttribute("title", "Delete Post - " + post.getTitle());
         return "deletePost";
@@ -139,6 +153,7 @@ public class HomeController {
     public String editPost(
         @RequestParam(name = "title") String title,
         @RequestParam(name = "content") String content, 
+        @RequestParam(name = "tags") String tagsInput, 
         @PathVariable Long id,
         Model model){
         //create new post
@@ -152,8 +167,10 @@ public class HomeController {
         
         //tags
         List<Tag> tags = new ArrayList<Tag>();
-        tags.add(new Tag("Test", post));
-        tags.add(new Tag("Test2", post));
+        List<String> tagStr = Arrays.asList(tagsInput.split(",", -1));
+        tagStr.forEach(tag ->{
+            tags.add(new Tag(tag, post));
+        });
 
         post.setTags(tags);
 
@@ -174,6 +191,7 @@ public class HomeController {
     public String createPost(
         @RequestParam(name = "title") String title,
         @RequestParam(name = "content") String content, 
+        @RequestParam(name = "tags") String tagsInput, 
         Model model) {
         //create new post
         Post post = new Post();
@@ -186,8 +204,10 @@ public class HomeController {
         
         //tags
         List<Tag> tags = new ArrayList<Tag>();
-        tags.add(new Tag("Test", post));
-        tags.add(new Tag("Test2", post));
+        List<String> tagStr = Arrays.asList(tagsInput.split(",", -1));
+        tagStr.forEach(tag ->{
+            tags.add(new Tag(tag, post));
+        });
 
         post.setTags(tags);
 

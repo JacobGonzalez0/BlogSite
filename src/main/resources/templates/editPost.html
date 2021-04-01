@@ -27,6 +27,10 @@
                         <div class="col">
                             <textarea name="content" id="editor" cols="30" rows="10" th:text="${post.content}"></textarea>
                         </div>
+                        <label class="visually-hidden" title="tags" aria-labelledby="userid"/>tags, go, here</label>
+                        <input class="form-control col my-2" type="text" name="tags" placeholder="tags" th:value="${tags}">
+                            
+                        
 
                         <input class="btn btn-primary col my-2" type="submit" />
                     </div>
