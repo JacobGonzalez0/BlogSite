@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.codeup.codeup_demo.models.Post;
 import com.codeup.codeup_demo.models.Tag;
 import com.codeup.codeup_demo.models.User;
@@ -17,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -193,23 +197,25 @@ public class HomeController {
     }
 
     @GetMapping("/register")
-    public String registerForm(){
+    public String registerForm(
+        Model model
+    ){
+        model.addAttribute("user", new User());
         return "register";
     }
 
     @PostMapping(path = "/register")
     public String createUser(
-        @RequestParam(name = "username") String username,
-        @RequestParam(name = "email") String email, 
-        @RequestParam(name = "password") String password,
+        @Valid User user,
+        BindingResult bindingResult,
         Model model) {
         //create new post
-        User user = new User();
-        user.setUsername(username);
-        user.setEmail(email);
-        String hash = bcrypt.encode(password);
-        user.setPassword(hash);
+        if (bindingResult.hasErrors()) {
+            return "register";
+        }
 
+        String hash = bcrypt.encode(user.getPassword());
+        user.setPassword(hash);
         userDao.save(user);
         model.addAttribute("message", "You should be able to login now!");
         return "login";

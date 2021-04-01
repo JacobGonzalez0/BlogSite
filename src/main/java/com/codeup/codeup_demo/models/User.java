@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.*;
@@ -19,12 +22,17 @@ public class User{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Username must exist")
+    @Size(min = 4, max = 16, message = "Username must be 4 characters long")
     @Column(name="username", nullable = false, unique = true)
     private String username;
 
+    @NotBlank(message = "Password must exist")
+    @Size(min = 8, max = 30, message = "Password must contain more than 8 characters")
     @Column(name="password")
     private String password;
 
+    @Email
     @Column(name="email")
     private String email;
 

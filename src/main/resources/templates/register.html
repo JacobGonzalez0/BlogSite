@@ -7,45 +7,44 @@
 
     </nav>
 
-    <div class="container-fluid container-lg">
+    <div class="container-fluid container-lg p-0 px-md-2">
+        <div class="row w-100">
+            <div class="col col-md-8">
 
-        <div th:replace="fragments/alerts :: alerts">
+                <form class="mx-auto my-3 col col-md-8 row needs-validation form-control" th:action="@{/register}" th:method="post" th:object="${user}">
+                    <div class="p-4">
+                        <h2 class="text-center">
+                            Register
+                        </h2>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+                            
+                        </div>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                            
+                        </div>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                    
+                        </div>
+                        
+                        <label class="visually-hidden" title="title" aria-labelledby="title">Username</label>
+                        <input th:field="*{username}"  class="form-control" placeholder="Username" autofocus="autofocus">
+                        
+                        <label class="visually-hidden" title="content" aria-labelledby="content"/>Password</label>
+                        <input th:field="*{password}" type="password" class="form-control my-2" placeholder="Password" >
+                        <label class="visually-hidden" title="content" aria-labelledby="content"/>Password</label>
+                        <input th:field="*{password}" type="password" class="form-control my-2" placeholder="Confirm Password" >
+                        
+                        <label class="visually-hidden" title="userid" aria-labelledby="userid"/>Email</label>
+                        <input th:field="*{email}" class="form-control my-2" placeholder="E-Mail" >
 
-        </div>
-
-        <form th:action="@{/register}" method="post" class="form-control m-auto p-2 col">
+                        <input class="btn btn-primary col my-2" type="submit" value="Register" />
+                    </div>
+    
+                </form>
+                <!-- Form ends -->
+            </div>
             
-            <div class="form-group row">
-                <label for="username" class="col-sm-2 col-form-label">Username</label>
-                <div class="col-sm-6">
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Username" autofocus="autofocus">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="password" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-6">
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" autofocus="autofocus">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="password" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-6">
-                    <input type="text" id="email" name="email" class="form-control" placeholder="E-Mail" autofocus="autofocus">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="confirm" class="col-sm-2 col-form-label">Confirm Password</label>
-                <div class="col-sm-6">
-                    <input type="password" id="confirm" name="confirm" class="form-control" placeholder="Confirm Password" autofocus="autofocus">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-2">
-                    <button type="submit" class="btn btn-primary">Sign in</button>
-                </div>
-            </div>
-        </form>
-
+        </div>
     </div>
 
     <footer th:replace="fragments/footer :: footer">
