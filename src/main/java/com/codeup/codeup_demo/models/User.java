@@ -28,7 +28,7 @@ public class User{
     private String username;
 
     @NotBlank(message = "Password must exist")
-    @Size(min = 8, max = 30, message = "Password must contain more than 8 characters")
+    @Size(min = 8, message = "Password must contain more than 8 characters")
     @Column(name="password")
     private String password;
 
