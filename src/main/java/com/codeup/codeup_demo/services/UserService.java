@@ -1,14 +1,13 @@
 package com.codeup.codeup_demo.services;
 
-import com.codeup.codeup_demo.repos.AuthGroupRepository;
-import com.codeup.codeup_demo.repos.UserRepository;
-
 import java.util.List;
 
+import com.codeup.codeup_demo.models.User;
 import com.codeup.codeup_demo.models.AuthGroup;
 import com.codeup.codeup_demo.models.Post;
-import com.codeup.codeup_demo.models.User;
 import com.codeup.codeup_demo.principals.UserPrincipal;
+import com.codeup.codeup_demo.repositories.AuthGroupRepository;
+import com.codeup.codeup_demo.repositories.UserRepository;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,7 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final AuthGroupRepository authGroupRepository;
@@ -63,8 +62,7 @@ public class UserService implements UserDetailsService{
     }
 
     public boolean postOwner(Post post, User user){
-        return post.getUser().equals(user);
+        return post.getOwner().equals(user);
     }
-
-
+    
 }

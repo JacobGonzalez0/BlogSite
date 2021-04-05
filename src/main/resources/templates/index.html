@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+<head>
+  <title>Jacob Gonzalez Blog</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="container">
+
+            <div class="p-4">
+                <h1 class="text-uppercase text-center">
+                    Programming Blog
+                </h1>
+            </div>
+
+            <div id="posts">
+
+                <div class="card shadow m-2" style="max-width: 350px">
+
+                    <img class="rounded" src="https://via.placeholder.com/350x150" alt="Image">
+                    
+                    <div class="p-2">
+                        <h3>Title of post</h3>
+
+                        <p>This is a description of the post overall, its actually the content but we wo..</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center p-2">
+                        <div>
+                            March 12th
+                        </div>
+                        <a href="" class="btn btn-primary">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </main>
+</body>
+<script src="/js/index.js" layout:fragment="script"></script>
+</html>

@@ -4,98 +4,104 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "posts")
 public class Post {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    @Column(name = "title", nullable = false)
+    @NotBlank(message = "Must contain text")
+    private String text;
+
+    @NotBlank(message = "Must contain a title")
+    @Size(min = 1, max = 255, message = "Title must not be longer than 255 characters")
     private String title;
 
-    @Column(name = "content", nullable = false)
-    private String content;
-
-    @Column(name="date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateCreated;
+    private Date timePosted;
 
-    @ManyToOne
-    private User user; 
+    @OneToOne
+    private User owner;
 
+    //Images
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
-    private List<Tag> tags;
+    private List<Image> images;
 
-    public Post(Long id, String title, String content, Date dateCreated, User user) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.dateCreated = dateCreated;
-        this.user = user;
-    }
-
-    public List<Tag> getTags() {
-        return this.tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
+    //comments
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<Comment> comments;
 
     public Post() {
     }
 
-    public Date getDateCreated() {
-        return this.dateCreated;
+    public Post(long id, String text, Date timePosted, User owner) {
+        this.id = id;
+        this.text = text;
+        this.timePosted = timePosted;
+        this.owner = owner;
     }
 
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getTitle() {
-        return this.title;
+    public String getText() {
+        return this.text;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getContent() {
-        return this.content;
+    public Date getTimePosted() {
+        return this.timePosted;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTimePosted(Date timePosted) {
+        this.timePosted = timePosted;
     }
 
-    public User getUser() {
-        return this.user;
+    public List<Image> getImages() {
+        return this.images;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
+    public User getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public List<Comment> getComments() {
+        return this.comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+    
+    
 }

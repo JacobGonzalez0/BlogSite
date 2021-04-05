@@ -1,8 +1,5 @@
 package com.codeup.codeup_demo.principals;
 
-import com.codeup.codeup_demo.models.User;
-import com.codeup.codeup_demo.models.AuthGroup;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +9,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.codeup.codeup_demo.models.AuthGroup;
+import com.codeup.codeup_demo.models.User;
 
 public class UserPrincipal implements UserDetails{
     
