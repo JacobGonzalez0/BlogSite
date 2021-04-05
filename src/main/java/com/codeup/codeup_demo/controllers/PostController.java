@@ -1,5 +1,6 @@
 package com.codeup.codeup_demo.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,8 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,7 +70,9 @@ public class PostController {
                     images.put(img);
                 }
                 entity.put("text", post.getText());
+                entity.put("title", post.getTitle());
                 entity.put("post_id", post.getId());
+                entity.put("date", post.getDateTime().toString());
                 entity.put("owner", user); 
                 entity.put("images", images);
                 entities.put(entity);
@@ -82,16 +87,31 @@ public class PostController {
         Model model,
         @Valid Post newPost,
         BindingResult bindingResult
-        ){
-            if (bindingResult.hasErrors()) {
-                return "{'error':'Error with post'}";
-            }
+        ) {
+            LocalDateTime lt = LocalDateTime.now();
+            newPost.setDateTime(lt);
+            
 
             User user = usersSvc.getCurrentUser();
             newPost.setOwner(user);
+            
 
             postDao.save(newPost);
         
+            if (bindingResult.hasErrors()) {
+                List<ObjectError> errors = bindingResult.getAllErrors();
+                JSONObject errorObj = new JSONObject();
+                errors.forEach( err ->{
+                    try {
+                        errorObj.put(
+                            err.getObjectName(), 
+                            err.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
+                return errorObj.toString();
+            }
 
             return "home";
     }
@@ -120,6 +140,26 @@ public class PostController {
         
 
             return "home";
+    }
+
+    @PostMapping("/post/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deletePost(
+        Model model,
+        @PathVariable Long id
+        ){
+
+            User user = usersSvc.getCurrentUser();
+            Post post = postDao.getOne(id);
+
+            // if(usersSvc.postOwner(post, user)){
+            //     return "{'error':'You do not own the post'}";
+            // }
+
+            postDao.delete(post);
+        
+
+            return "{'message':'Deleted post successfully'}";
     }
     
 }

@@ -1,9 +1,12 @@
 package com.codeup.codeup_demo.models;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -31,13 +35,13 @@ public class Post {
     @Size(min = 1, max = 255, message = "Title must not be longer than 255 characters")
     private String title;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timePosted;
-
     @OneToOne
     private User owner;
 
-    //Images
+    @Column(name = "date_time")
+    protected LocalDateTime dateTime;
+
+    //Imagesreturn errorObj.toString();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Image> images;
 
@@ -48,10 +52,9 @@ public class Post {
     public Post() {
     }
 
-    public Post(long id, String text, Date timePosted, User owner) {
+    public Post(long id, String text, User owner) {
         this.id = id;
         this.text = text;
-        this.timePosted = timePosted;
         this.owner = owner;
     }
 
@@ -61,6 +64,15 @@ public class Post {
 
     public String getTitle() {
         return this.title;
+    }
+
+
+    public LocalDateTime getDateTime() {
+        return this.dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public void setTitle(String title) {
@@ -78,14 +90,6 @@ public class Post {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public Date getTimePosted() {
-        return this.timePosted;
-    }
-
-    public void setTimePosted(Date timePosted) {
-        this.timePosted = timePosted;
     }
 
     public List<Image> getImages() {

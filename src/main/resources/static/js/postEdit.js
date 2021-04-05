@@ -7,7 +7,8 @@ function postUpload(){
     xhr.send(data); 
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            updateFeed()
+            console.log("success!")
+            console.log(this.responseText)
         }
     };
 }

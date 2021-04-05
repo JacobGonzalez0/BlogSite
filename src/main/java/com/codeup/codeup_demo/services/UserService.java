@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean postOwner(Post post, User user){
-        return post.getOwner().equals(user);
+        return post.getOwner().getId().equals(user.getId());
     }
     
 }
