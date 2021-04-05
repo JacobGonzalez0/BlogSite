@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+<head>
+  <title>Jacob Gonzalez Blog</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="container">
+
+            <div class="d-none" sec:authorize="hasRole('ROLE_ADMIN')">
+                <div id="showDelete" value="true"></div>
+            </div>
+
+            <div class="col py-5">
+                <h1 th:text="${post.title}">
+
+                </h1>
+                <div class="d-flex justify-content-start d-flex">
+                    <img style="max-width: 48px" class="rounded-circle me-2" th:src="@{/{url}(url=${post.owner.userImage.url})}" alt="">
+                    <div>
+                        <div th:text="${post.owner.username}"></div>
+                        <div th:text="${post.dateTime}"></div>
+                    </div>
+                </div>
+
+                <div>
+                   <img src="${post.images}" alt=""> 
+                </div>
+
+                <div th:text="${post.text}">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampledeleteModal" aria-hidden="true" sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="confirmDelete" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script src="/js/index.js" layout:fragment="script"></script>
+</html>

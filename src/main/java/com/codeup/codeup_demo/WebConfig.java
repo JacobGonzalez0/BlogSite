@@ -57,7 +57,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/post/all","/register","/login","/img/**","/images/**","/js/**").permitAll()
+                .antMatchers("/","/post/all","/post/view/*","/register","/login","/img/**","/images/**","/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

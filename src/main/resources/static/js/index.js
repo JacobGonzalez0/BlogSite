@@ -63,8 +63,10 @@ class PostRetriver{
 
             let button = document.createElement("a");
             button.setAttribute("class","btn btn-primary")
-            button.href = "/post/" + post.post_id;
-            button.innerHTML = "Read More <i class='fas fa-arrow-right'></i>"
+            button.href = "/post/view/" + post.post_id;
+            button.innerHTML = "Read More <i class='fas fa-arrow-right'></i> "
+
+            
 
 
             footer.appendChild(dateOutput);
@@ -92,6 +94,13 @@ class PostRetriver{
                     
                 }
                 deleteBtn.innerHTML = "<i class='far fa-trash-alt'></i> Delete"
+
+                let editButton = document.createElement("a");
+                editButton.setAttribute("class","btn btn-primary")
+                editButton.href = "/post/edit/" + post.post_id;
+                editButton.innerHTML = "<i class='far fa-edit'></i> Edit"
+
+                footer.appendChild(editButton);
                 footer.appendChild(deleteBtn);
             }
         

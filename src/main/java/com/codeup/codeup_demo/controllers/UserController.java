@@ -11,6 +11,7 @@ import com.codeup.codeup_demo.repositories.UserRepository;
 import com.codeup.codeup_demo.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,12 +47,26 @@ public class UserController {
         User user = usersSvc.getCurrentUser();
         Post post = postDao.getOne(id);
 
-        if(usersSvc.postOwner(post, user)){
+        model.addAttribute("post", post);
+        return "editPost";
+    }
+
+    
+    @GetMapping("/post/view/{id}")
+    @PreAuthorize("permitAll()")
+    public String viewPost(
+        Model model,
+        @PathVariable Long id
+    ){
+
+        Post post = postDao.getOne(id);
+
+        if(post == null){
             return "redirect:/";
         }
 
         model.addAttribute("post", post);
-        return "editPost";
+        return "post";
     }
     
 }
