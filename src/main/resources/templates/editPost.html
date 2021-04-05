@@ -25,6 +25,10 @@
                         <label class="my-1" for="content">Content</label>
                         <input class="form-control my-1" th:field="*{text}" placeholder="Content" th:value="${text}">
                     </div>
+                    <div class="d-flex flex-column">
+                        <label class="my-1" for="content">Image</label>
+                        <input class="form-control my-1" id="file" name="image" type="file">
+                    </div>
                     <div class="col">
                         <button id="postButton" class="btn btn-primary">Save Post</button>
                     </div>

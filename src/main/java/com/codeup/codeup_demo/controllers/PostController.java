@@ -1,6 +1,7 @@
 package com.codeup.codeup_demo.controllers;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import com.codeup.codeup_demo.models.User;
 import com.codeup.codeup_demo.repositories.PostRepository;
 import com.codeup.codeup_demo.repositories.UserRepository;
 import com.codeup.codeup_demo.services.UserService;
+import com.codeup.codeup_demo.util.FileUpload;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +32,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -67,7 +71,7 @@ public class PostController {
                     JSONObject image = new JSONObject();
                     image.put("url", img.getUrl());
                     image.put("id", img.getId());
-                    images.put(img);
+                    images.put(image);
                 }
                 entity.put("text", post.getText());
                 entity.put("title", post.getTitle());
@@ -86,7 +90,8 @@ public class PostController {
     public String createPost(
         Model model,
         @Valid Post newPost,
-        BindingResult bindingResult
+        BindingResult bindingResult,
+        @RequestParam(name = "image") MultipartFile uploadedFile
         ) {
             LocalDateTime lt = LocalDateTime.now();
             newPost.setDateTime(lt);
@@ -94,7 +99,16 @@ public class PostController {
 
             User user = usersSvc.getCurrentUser();
             newPost.setOwner(user);
+
             
+            
+            if(!uploadedFile.isEmpty()){
+                postDao.save(newPost);
+                Image image = FileUpload.uploadImage(uploadedFile, newPost, user);
+                List<Image> images = new ArrayList<Image>();
+                images.add(image);
+                newPost.setImages(images); 
+            }
 
             postDao.save(newPost);
         
@@ -121,17 +135,20 @@ public class PostController {
         Model model,
         @Valid Post newPost,
         @PathVariable Long id,
-        BindingResult bindingResult
+        BindingResult bindingResult,
+        @RequestParam(name = "image") MultipartFile uploadedFile
         ){
-            if (bindingResult.hasErrors()) {
-                return "{'error':'Error with post'}";
-            }
 
             User user = usersSvc.getCurrentUser();
             Post post = postDao.getOne(id);
 
-            if(usersSvc.postOwner(post, user)){
-                return "{'error':'You do not own the post'}";
+            postDao.save(newPost);
+
+            if(!uploadedFile.isEmpty()){
+                Image image = FileUpload.uploadImage(uploadedFile, newPost, user);
+                List<Image> images = new ArrayList<Image>();
+                images.add(image);
+                newPost.setImages(images); 
             }
 
             post.setText(newPost.getText());
@@ -149,12 +166,7 @@ public class PostController {
         @PathVariable Long id
         ){
 
-            User user = usersSvc.getCurrentUser();
             Post post = postDao.getOne(id);
-
-            // if(usersSvc.postOwner(post, user)){
-            //     return "{'error':'You do not own the post'}";
-            // }
 
             postDao.delete(post);
         

@@ -36,7 +36,7 @@ class PostRetriver{
             if(post.images.length == 0){
                 image.src = "https://via.placeholder.com/350x150"
             }else{
-                image.src = post.images[0];
+                image.src = post.images[0].url;
             }
 
             let content = document.createElement("div");

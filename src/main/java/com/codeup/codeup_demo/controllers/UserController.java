@@ -9,6 +9,7 @@ import com.codeup.codeup_demo.repositories.PostRepository;
 import com.codeup.codeup_demo.repositories.ProfileRepository;
 import com.codeup.codeup_demo.repositories.UserRepository;
 import com.codeup.codeup_demo.services.UserService;
+import com.codeup.codeup_demo.util.FileUpload;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +34,10 @@ public class UserController {
     UserService usersSvc;
 
     @GetMapping("/post/create")
-    public String createPost(Model model) {
+    public String createPost(Model model
+    ) {
+
+        
 
         model.addAttribute("post", new Post());
         return "createPost";

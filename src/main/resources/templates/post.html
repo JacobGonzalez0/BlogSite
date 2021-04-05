@@ -27,7 +27,7 @@
                 </div>
 
                 <div>
-                   <img src="${post.images}" alt=""> 
+                   <img class="mx-0 m-md-2 w-100" th:src="@{/{url}(url=${post.images[0].url})}" alt=""> 
                 </div>
 
                 <div th:text="${post.text}">

@@ -19,8 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class FileUpload {
 
-   
-
     private static ImageRepository imageDao;
     private static String UPLOAD_PATH;
 
