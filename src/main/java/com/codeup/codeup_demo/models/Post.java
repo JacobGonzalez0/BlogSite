@@ -59,6 +59,15 @@ public class Post {
         return this.id;
     }
 
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
     public void setId(long id) {
         this.id = id;
     }

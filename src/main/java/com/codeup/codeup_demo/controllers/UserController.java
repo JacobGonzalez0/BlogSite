@@ -35,7 +35,7 @@ public class UserController {
     public String createPost(Model model) {
 
         model.addAttribute("post", new Post());
-        return "creatPost";
+        return "createPost";
     }
 
     @GetMapping("/post/edit/{id}")
