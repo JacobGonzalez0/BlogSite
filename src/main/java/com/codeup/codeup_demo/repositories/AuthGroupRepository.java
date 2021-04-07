@@ -1,8 +1,9 @@
-package com.codeup.codeup_demo.repos;
+package com.codeup.codeup_demo.repositories;
 
 import java.util.List;
 
 import com.codeup.codeup_demo.models.AuthGroup;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

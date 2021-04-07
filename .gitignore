@@ -33,8 +33,9 @@ build/
 .vscode/
 
 ### Application ###
-src/main/resources/application.properties
+
 
 ## Image upload location ##
 tmp/*
 tmp/
+images/*

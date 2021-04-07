@@ -1,128 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-    <!-- Head imports -->
-    <head th:replace=" fragments/head :: head(${title})">
-
-    <!-- Theme included stylesheets -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
+<html 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+<head>
+  <title>Create Post</title>
 </head>
 <body>
-    <nav th:replace="fragments/navbar :: navBar">
+    <main layout:fragment="content" class="container">
 
-    </nav>
-
-
-    <div class="container-fluid container-lg p-0 px-md-2">
-        <div class="row w-100">
-            <div class="col col-md-8">
-
-                <form class="mx-auto my-3 col col-md-8 row needs-validation form-control" action="/post/create" method="post" novalidate>
-                    <div class="p-4">
-    
-                        <label class="visually-hidden" title="title" aria-labelledby="title">Title</label>
-                        <input class="form-control col my-2" type="text" name="title" placeholder="Title" th:value="${post.title}" />
-        
-                        <label class="visually-hidden" title="content" aria-labelledby="content"/>Content</label>
-                        <div class="col">
-                            <textarea name="content" id="editor" cols="30" rows="10" th:text="${post.content}"></textarea>
-                        </div>
-                        <label class="visually-hidden" title="tags" aria-labelledby="userid"/>tags, go, here</label>
-                        <input class="form-control col my-2" type="text" name="tags" placeholder="tags" th:value="${tags}">
-                            
-                        
-
-                        <input class="btn btn-primary col my-2" type="submit" />
+        <div class="col col-md-8 col-lg-6 m-auto justify-content-center row">
+            <form id="postForm" action="#" th:action="@{/post/create}" th:object="${post}" enctype="multipart/form-data">
+                <div class="col justify-content-center align-items-center">
+                    <h2 class="text-center p-3">
+                        Edit Post
+                    </h2>
+                </div>
+                <div class="col">
+                    <div class="d-flex flex-column">
+                        <label class="my-1" for="title">Title</label>
+                        <input class="d-none" name="title" th:field="*{id}" th:value="${id}" id="postid"></input>
+                        <input class="form-control" name="title" th:field="*{title}" th:value="${title}"></input>
+                    <div class="d-flex flex-column">
+                        <label class="my-1" for="content">Content</label>
+                        <input class="form-control my-1" th:field="*{text}" placeholder="Content" th:value="${text}">
                     </div>
-    
-                </form>
-                <!-- Form ends -->
-            </div>
-            
+                    <div class="d-flex flex-column">
+                        <label class="my-1" for="content">Image</label>
+                        <input class="form-control my-1" id="file" name="image" type="file">
+                    </div>
+                    <div class="col">
+                        <button id="postButton" class="btn btn-primary">Save Post</button>
+                    </div>
+                </div>
+                
+            </form>
         </div>
-    </div>
-
-    <footer th:replace="fragments/footer :: footer">
-
-    </footer>
+    </main>
     
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.7.1/tinymce.min.js" integrity="sha512-RnlQJaTEHoOCt5dUTV0Oi0vOBMI9PjCU7m+VHoJ4xmhuUNcwnB5Iox1es+skLril1C3gHTLbeRepHs1RpSCLoQ==" crossorigin="anonymous"></script>
-<script> 
-     tinymce.init({
-        selector: '#editor',
-        plugins: 'link lists media image code',
-        mobile: {
-            menubar: true
-        },
-        toolbar: 'alignleft aligncenter alignright alignjustify | formatselect | bullist numlist | outdent indent | link image code',
-        images_upload_handler: (blobInfo, success, failure)=>{
-            var xhr, formData;
-        
-            xhr = new XMLHttpRequest();
-            xhr.withCredentials = false;
-            xhr.open('POST', 'http://localhost:8080/upload/image');
-
-            xhr.onload = function () {
-                var json;
-
-                if (xhr.status != 200) {
-                    failure('HTTP Error: ' + xhr.status);
-                    return;
-                }
-
-                json = xhr.responseText;
-                success(json);
-            };
-
-            formData = new FormData();
-            formData.append('file', blobInfo.blob(), blobInfo.filename());
-
-            xhr.send(formData);
-        },
-        
-        /* enable title field in the Image dialog*/
-        image_title: true,
-        
-        /* enable automatic uploads of images represented by blob or data URIs*/
-        automatic_uploads: true,
-                                
-        /*Here we add custom filepicker only to Image dialog*/
-        file_picker_types: 'image',
-        
-        /* and here's our custom image picker*/
-        file_picker_callback: function (cb, value, meta) {
-            var input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/*');
-    
-            input.onchange = function () {
-                var file = this.files[0];                    
-                var reader = new FileReader();
-                
-                reader.onload = function () {
-                    /*
-                    Note: Now we need to register the blob in TinyMCEs image blob
-                    registry. In the next release this part hopefully won't be
-                    necessary, as we are looking to handle it internally.
-                    */
-                    var id = 'blobid' + (new Date()).getTime();
-                    var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-                    var base64 = reader.result.split(',')[1];
-                    
-                    var blobInfo = blobCache.create(id, file, base64);                                    
-                    blobCache.add(blobInfo);
-    
-                    /* call the callback and populate the Title field with the file name */
-                    cb(blobInfo.blobUri(), { title: file.name });
-                };
-            
-                reader.readAsDataURL(file);
-            };
-    
-            input.click();
-        }              
-    });
-</script>
+<script src="/js/postEdit.js" layout:fragment="script" ></script>
 
 </html>

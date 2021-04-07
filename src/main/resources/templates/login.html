@@ -1,45 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace=" fragments/head :: head(${title})">
+<html 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+<head>
+  <title>Login</title>
+  <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
-    <nav th:replace="fragments/navbar :: navBar">
-
-    </nav>
-
-    <div class="container-fluid container-lg">
-
-        <div th:replace="fragments/alerts :: alerts">
-
-        </div>
-
-        <form th:action="@{/login}" method="post" class="form-control m-auto p-2 col">
-            
-            <div class="form-group row">
-                <label for="username" class="col-sm-2 col-form-label">Username</label>
-                <div class="col-sm-6">
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Username" autofocus="autofocus">
+    <main layout:fragment="content">
+        <div class="col col-md-8 col-lg-6 m-auto justify-content-center row">
+            <form action="#" th:action="@{/login}" method="post" >
+                <div class="col justify-content-center align-items-center">
+                    <h2 class="text-center p-3">
+                       Login
+                    </h2>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="password" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-6">
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" autofocus="autofocus">
+                <div class="col">
+                    <div th:if="${param.error}">
+                        <p class="alert alert-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                    </div>
+                     
+                    <div th:if="${param.logout}">
+                        <p class="alert alert-success">You have been logged out.</p>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label class="my-1" for="location">Username</label>
+                        <input class="form-control my-1" type="text" name="username">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label class="my-1" for="birthday">Password</label>
+                        <input class="form-control" name="password" type="password"></input>
+                    </div>
+                    <!-- <div class="form-check">
+                        <input name="remember-me" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Remember Me
+                        </label>
+                    </div> -->
+
+                    <div class="col my-2">
+                        <input class="btn btn-primary" type="submit" value="Login">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-2">
-                    <button type="submit" class="btn btn-primary">Sign in</button>
+                <div class="col my-4">
+                   <div class="justify-content-center align-items-center d-flex">
+                       New user? Register here! <a href="/register" class="btn btn-success mx-2">Register</a>
+                   </div>
                 </div>
-            </div>
-        </form>
-
-    </div>
-
-    <footer th:replace="fragments/footer :: footer">
-
-    </footer>
-    
+                
+            </form>
+    </main>
 </body>
-
 </html>

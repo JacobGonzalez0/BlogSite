@@ -1,66 +1,80 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace=" fragments/head :: head(${title})">
+<html 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+<head>
+  <title>Jacob Gonzalez Blog</title>
 </head>
 <body>
-    <nav th:replace="fragments/navbar :: navBar">
+    <main layout:fragment="content">
+        <div class="container">
 
-    </nav>
+            <div class="d-none" sec:authorize="hasRole('ROLE_ADMIN')">
+                <div id="showDelete" value="true"></div>
+            </div>
 
-    <div th:replace="fragments/alerts :: alerts">
+            <div class="col py-5">
+                <h1 th:text="${post.title}">
 
-    </div>
+                </h1>
+                <div class="d-flex justify-content-start d-flex">
+                    <img style="max-width: 48px" class="rounded-circle me-2" th:src="@{/{url}(url=${post.owner.userImage.url})}" alt="">
+                    <div>
+                        <div th:text="${post.owner.username}"></div>
+                        <div th:text="${post.dateTime}"></div>
+                    </div>
+                </div>
 
-    <div class="container-fluid container-lg">
-        <div class="row m-2 justify-content-center">
-            <div class="card post p-0">
+                <div>
+                   <img class="mx-0 m-md-2 w-100" th:src="@{/{url}(url=${post.images[0].url})}" alt=""> 
+                </div>
 
-                <div class="card-header d-flex justify-content-between ">
-                    <div class="p-2">
-                        <h2 th:text="${post.title}"></h2>
+                <div th:text="${post.text}">
+
+                </div>
+
+                <form action="#" th:object="${user}" method="post">
+                    <div class="col justify-content-center align-items-center">
+                        <h2 class="text-center p-3">
+                           Comments
+                        </h2>
+                    </div>
+                    <div class="col">                     
+                        <div class="d-flex flex-column">
+                            <label class="my-1" for="text">Comment</label>
+                            <input class="form-control my-1" type="text" name="text">
+                            <button id="submitComment" class="btn btn-primary">Comment</button>
+                        </div>
+                    </div>
+                    <div class="col my-4" id="comments">
+                       
                     </div>
                     
-                    <div class="p-2">
-                        Author: <td th:text="${post.user.username}" />
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    
-                    <h5 class="card-title">
-                        <td th:text="${post.title}" />
-                    </h5>
-                    <p>
-                        <td  th:utext="${post.content}" />
-                    </p>
-                
-                </div>
-                
-                <div class="d-flex justify-content-between card-footer">
-    
-                    <div class="date">
-                        <td th:text="${post.dateCreated}" />
-                    </div>
-                    <div class="d-flex flex-wrap"> 
-    
-                        <tr th:each="tag: ${post.tags}">
-                            <button class="btn btn-secondary mx-1">
-                                <td th:text="${tag.name}" />
-                            </button>
-                        </tr>
-                        
-                    </div>
-                </div>
+                </form>
                 
             </div>
 
         </div>
-    </div>
 
-    <footer th:replace="fragments/footer :: footer">
-
-    </footer>
-    
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampledeleteModal" aria-hidden="true" sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="confirmDelete" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
-<script src="js/main.js"></script>
+<script src="/js/post.js" layout:fragment="script"></script>
 </html>

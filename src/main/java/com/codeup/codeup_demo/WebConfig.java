@@ -1,6 +1,9 @@
 package com.codeup.codeup_demo;
 
+import com.codeup.codeup_demo.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -12,20 +15,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import com.codeup.codeup_demo.services.UserService;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer{
+public class WebConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer{
 
-    public final static String IMAGE_RESOURCE_BASE = "/images/";
-	public final static String IMAGE_FILE_BASE = "tmp/images/";	
-	public final static String BASE_URL = "http://localhost:8080";
+    @Value("${file-upload-path}")
+    private String uploadPath;
 
     @Autowired
     private UserService userService;
@@ -58,21 +57,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/post/*", "/css/*", "/js/*","/images/**","/favicon.ico","/img/*","/register").permitAll()
+                .antMatchers("/","/post/all","/post/view/*","/register","/login","/img/**","/images/**","/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll()
-                .and()
-                .logout().invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/logout-success").permitAll();
+                .loginPage("/login")
+                .permitAll();
+                
+                
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(IMAGE_RESOURCE_BASE + "**")
-                .addResourceLocations("file:" + IMAGE_FILE_BASE);
+        registry.addResourceHandler("/images/" + "**")
+                .addResourceLocations("file:" + uploadPath);
     }
+
 }
