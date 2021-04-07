@@ -33,10 +33,6 @@
                             <input class="form-control my-1" th:field="*{password}" type="password" placeholder="Password">
                             <div class="alert alert-danger my-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
                         </div>
-                        <div class="g-recaptcha col-sm-5"
-                        th:attr="data-sitekey=${@captchaSettings.getSite()}"></div>
-                        <span id="captchaError" class="alert alert-danger col-sm-4"
-                        style="display:none"></span>
                         <div class="col">
                             <input class="btn btn-primary" type="submit" value="Register">
                         </div>
