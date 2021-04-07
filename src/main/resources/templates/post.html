@@ -33,6 +33,26 @@
                 <div th:text="${post.text}">
 
                 </div>
+
+                <form action="#" th:object="${user}" method="post">
+                    <div class="col justify-content-center align-items-center">
+                        <h2 class="text-center p-3">
+                           Comments
+                        </h2>
+                    </div>
+                    <div class="col">                     
+                        <div class="d-flex flex-column">
+                            <label class="my-1" for="text">Comment</label>
+                            <input class="form-control my-1" type="text" name="text">
+                            <button id="submitComment" class="btn btn-primary">Comment</button>
+                        </div>
+                    </div>
+                    <div class="col my-4" id="comments">
+                       
+                    </div>
+                    
+                </form>
+                
             </div>
 
         </div>
@@ -56,5 +76,5 @@
         </div>
     </main>
 </body>
-<script src="/js/index.js" layout:fragment="script"></script>
+<script src="/js/post.js" layout:fragment="script"></script>
 </html>

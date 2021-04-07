@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.codeup.codeup_demo.models.Comment;
 import com.codeup.codeup_demo.models.Image;
 import com.codeup.codeup_demo.models.Post;
 import com.codeup.codeup_demo.models.User;
@@ -172,6 +173,24 @@ public class PostController {
         
 
             return "{'message':'Deleted post successfully'}";
+    }
+
+    @PostMapping("/post/{id}/comment")
+    public String createComment(
+        Model model,
+        @Valid Comment newComment,
+        @PathVariable Long id
+        ){
+
+            Post post = postDao.getOne(id);
+
+            List<Comment> comments = post.getComments();
+            comments.add(newComment);
+
+            post.setComments(comments);
+            postDao.save(post);
+        
+            return "{'message':'Comment Posted!'}";
     }
     
 }
